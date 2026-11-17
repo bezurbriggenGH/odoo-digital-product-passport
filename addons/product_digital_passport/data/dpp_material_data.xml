@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Starter materials. The emission factors are ILLUSTRATIVE ORDER-OF-MAGNITUDE
+    values for learning purposes. Replace them with values from a recognised
+    database (ecoinvent, DEFRA/DESNZ, ADEME Base Empreinte...) for real use.
+    noupdate="1": once installed, Odoo will not overwrite your edits on upgrade.
+-->
+<odoo noupdate="1">
+    <record id="material_aluminium" model="dpp.material">
+        <field name="name">Aluminium</field>
+        <field name="code">AL</field>
+        <field name="category">metal</field>
+        <field name="emission_factor">12.0</field>
+        <field name="recycled_emission_factor">0.6</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_steel" model="dpp.material">
+        <field name="name">Steel</field>
+        <field name="code">ST</field>
+        <field name="category">metal</field>
+        <field name="emission_factor">2.3</field>
+        <field name="recycled_emission_factor">0.7</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_copper" model="dpp.material">
+        <field name="name">Copper</field>
+        <field name="code">CU</field>
+        <field name="category">metal</field>
+        <field name="emission_factor">4.0</field>
+        <field name="recycled_emission_factor">1.0</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_pet" model="dpp.material">
+        <field name="name">PET plastic</field>
+        <field name="code">PET</field>
+        <field name="category">plastic</field>
+        <field name="emission_factor">2.7</field>
+        <field name="recycled_emission_factor">0.9</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_abs" model="dpp.material">
+        <field name="name">ABS plastic</field>
+        <field name="code">ABS</field>
+        <field name="category">plastic</field>
+        <field name="emission_factor">3.5</field>
+        <field name="recycled_emission_factor">1.2</field>
+        <field name="recyclable" eval="False"/>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_rubber" model="dpp.material">
+        <field name="name">Rubber</field>
+        <field name="code">RUB</field>
+        <field name="category">rubber</field>
+        <field name="emission_factor">3.0</field>
+        <field name="recycled_emission_factor">1.0</field>
+        <field name="recyclable" eval="False"/>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_cotton" model="dpp.material">
+        <field name="name">Organic cotton</field>
+        <field name="code">COT</field>
+        <field name="category">textile</field>
+        <field name="emission_factor">4.0</field>
+        <field name="recycled_emission_factor">1.0</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_polyester" model="dpp.material">
+        <field name="name">Polyester</field>
+        <field name="code">PES</field>
+        <field name="category">textile</field>
+        <field name="emission_factor">3.4</field>
+        <field name="recycled_emission_factor">1.2</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_glass" model="dpp.material">
+        <field name="name">Glass</field>
+        <field name="code">GL</field>
+        <field name="category">glass</field>
+        <field name="emission_factor">1.0</field>
+        <field name="recycled_emission_factor">0.5</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_cardboard" model="dpp.material">
+        <field name="name">Cardboard</field>
+        <field name="code">CB</field>
+        <field name="category">paper</field>
+        <field name="emission_factor">1.1</field>
+        <field name="recycled_emission_factor">0.7</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_wood" model="dpp.material">
+        <field name="name">Wood</field>
+        <field name="code">WD</field>
+        <field name="category">wood</field>
+        <field name="emission_factor">0.4</field>
+        <field name="recycled_emission_factor">0.2</field>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_li_ion" model="dpp.material">
+        <field name="name">Lithium-ion battery</field>
+        <field name="code">LIB</field>
+        <field name="category">electronic</field>
+        <field name="emission_factor">12.0</field>
+        <field name="recycled_emission_factor">6.0</field>
+        <field name="hazardous" eval="True"/>
+        <field name="source">Illustrative value</field>
+    </record>
+    <record id="material_electronics" model="dpp.material">
+        <field name="name">Electronics (PCB)</field>
+        <field name="code">PCB</field>
+        <field name="category">electronic</field>
+        <field name="emission_factor">60.0</field>
+        <field name="recycled_emission_factor">60.0</field>
+        <field name="hazardous" eval="True"/>
+        <field name="source">Illustrative value</field>
+    </record>
+</odoo>

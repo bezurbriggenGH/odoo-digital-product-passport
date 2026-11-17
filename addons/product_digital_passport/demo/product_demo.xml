@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="partner_demo_manufacturer" model="res.partner">
+        <field name="name">GreenWheels Manufacturing</field>
+        <field name="is_company" eval="True"/>
+        <field name="country_id" ref="base.es"/>
+    </record>
+
+    <!-- Electric city bike -->
+    <record id="product_demo_ebike" model="product.template">
+        <field name="name">Electric City Bike</field>
+        <field name="default_code">EBIKE-01</field>
+        <field name="list_price">1490</field>
+        <field name="dpp_enabled" eval="True"/>
+        <field name="dpp_manufacturer_id" ref="partner_demo_manufacturer"/>
+        <field name="dpp_co2_manufacturing">45</field>
+        <field name="dpp_co2_transport">12</field>
+        <field name="dpp_repairability_score">8</field>
+        <field name="dpp_durability_years">10</field>
+        <field name="dpp_spare_parts_years">7</field>
+        <field name="dpp_care_instructions" type="html">
+            <p>Charge the battery between 20% and 80% to extend its life.
+            Check tyre pressure monthly and service the brakes every year.</p>
+        </field>
+        <field name="dpp_end_of_life" type="html">
+            <p>Return the battery to any authorised collection point: never throw it
+            in household waste. The aluminium frame is 100% recyclable.</p>
+        </field>
+    </record>
+    <record id="product_demo_ebike_frame" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_ebike"/>
+        <field name="sequence">1</field>
+        <field name="component">Frame</field>
+        <field name="material_id" ref="material_aluminium"/>
+        <field name="weight_kg">12</field>
+        <field name="recycled_pct">60</field>
+        <field name="origin_country_id" ref="base.es"/>
+    </record>
+    <record id="product_demo_ebike_battery" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_ebike"/>
+        <field name="sequence">2</field>
+        <field name="component">Battery</field>
+        <field name="material_id" ref="material_li_ion"/>
+        <field name="weight_kg">3</field>
+        <field name="origin_country_id" ref="base.de"/>
+    </record>
+    <record id="product_demo_ebike_tyres" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_ebike"/>
+        <field name="sequence">3</field>
+        <field name="component">Tyres</field>
+        <field name="material_id" ref="material_rubber"/>
+        <field name="weight_kg">2</field>
+        <field name="origin_country_id" ref="base.fr"/>
+    </record>
+    <record id="product_demo_ebike_wiring" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_ebike"/>
+        <field name="sequence">4</field>
+        <field name="component">Wiring</field>
+        <field name="material_id" ref="material_copper"/>
+        <field name="weight_kg">0.5</field>
+        <field name="recycled_pct">30</field>
+    </record>
+    <record id="product_demo_ebike_packaging" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_ebike"/>
+        <field name="sequence">5</field>
+        <field name="component">Packaging</field>
+        <field name="material_id" ref="material_cardboard"/>
+        <field name="weight_kg">2</field>
+        <field name="recycled_pct">80</field>
+        <field name="origin_country_id" ref="base.es"/>
+    </record>
+
+    <!-- Organic cotton T-shirt -->
+    <record id="product_demo_tshirt" model="product.template">
+        <field name="name">Organic Cotton T-shirt</field>
+        <field name="default_code">TSHIRT-01</field>
+        <field name="list_price">29</field>
+        <field name="dpp_enabled" eval="True"/>
+        <field name="dpp_manufacturer_id" ref="partner_demo_manufacturer"/>
+        <field name="dpp_co2_manufacturing">2.1</field>
+        <field name="dpp_co2_transport">0.4</field>
+        <field name="dpp_repairability_score">6</field>
+        <field name="dpp_durability_years">4</field>
+        <field name="dpp_care_instructions" type="html">
+            <p>Wash at 30 °C, inside out. Air dry: avoid the tumble dryer.</p>
+        </field>
+        <field name="dpp_end_of_life" type="html">
+            <p>Donate it or drop it in a textile collection container.</p>
+        </field>
+    </record>
+    <record id="product_demo_tshirt_body" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_tshirt"/>
+        <field name="sequence">1</field>
+        <field name="component">Body</field>
+        <field name="material_id" ref="material_cotton"/>
+        <field name="weight_kg">0.18</field>
+        <field name="origin_country_id" ref="base.pt"/>
+    </record>
+    <record id="product_demo_tshirt_seams" model="dpp.product.material">
+        <field name="product_tmpl_id" ref="product_demo_tshirt"/>
+        <field name="sequence">2</field>
+        <field name="component">Seams and label</field>
+        <field name="material_id" ref="material_polyester"/>
+        <field name="weight_kg">0.02</field>
+        <field name="recycled_pct">100</field>
+    </record>
+</odoo>

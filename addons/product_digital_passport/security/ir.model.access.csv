@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dpp_material_user,dpp.material user,model_dpp_material,base.group_user,1,0,0,0
+access_dpp_material_admin,dpp.material admin,model_dpp_material,base.group_system,1,1,1,1
+access_dpp_product_material_user,dpp.product.material user,model_dpp_product_material,base.group_user,1,1,1,1

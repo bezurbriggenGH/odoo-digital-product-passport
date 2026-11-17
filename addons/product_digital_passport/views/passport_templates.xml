@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Public passport page (/passport/<token>). Standalone page with its own
+        CSS so it works without the Website app and loads fast on a phone.
+        Values come from product._dpp_public_data() as the "data" dict.
+    -->
+    <template id="passport_public_page" name="Digital Product Passport: public page">
+        <t t-call="web.layout">
+            <t t-set="title" t-value="'Product Passport - %s' % data['name']"/>
+            <t t-set="head">
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <style>
+                    :root {
+                        --bg: #f4f6f3; --card: #ffffff; --text: #1d2b24; --muted: #5d6b63;
+                        --line: #e2e7e3; --accent: #1f7a4d;
+                        --a: #1a9850; --b: #66bd63; --c: #f4c430; --d: #f08c3a; --e: #d73027;
+                        --materials: #1f7a4d; --manufacturing: #5b8def; --transport: #f0a63a;
+                    }
+                    @media (prefers-color-scheme: dark) {
+                        :root {
+                            --bg: #121815; --card: #1b2420; --text: #e6ede9; --muted: #9aa8a0;
+                            --line: #2c3833; --accent: #4cc38a;
+                        }
+                    }
+                    * { box-sizing: border-box; }
+                    body { margin: 0; background: var(--bg); color: var(--text);
+                           font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+                    .dpp { max-width: 720px; margin: 0 auto; padding: 16px; }
+                    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+                            padding: 20px; margin-bottom: 16px; }
+                    .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+                               color: var(--accent); font-weight: 600; }
+                    h1 { font-size: 26px; line-height: 1.2; margin: 4px 0 6px; }
+                    h2 { font-size: 18px; margin: 0 0 12px; }
+                    .muted { color: var(--muted); font-size: 14px; }
+                    .hero { display: flex; gap: 16px; align-items: center; }
+                    .hero img { width: 96px; height: 96px; object-fit: contain; border-radius: 10px;
+                                background: #fff; flex-shrink: 0; }
+                    .rating { width: 64px; height: 64px; border-radius: 12px; color: #fff; flex-shrink: 0;
+                              display: flex; align-items: center; justify-content: center;
+                              font-size: 34px; font-weight: 700; margin-left: auto; }
+                    .rating-A { background: var(--a); } .rating-B { background: var(--b); }
+                    .rating-C { background: var(--c); color: #1d2b24; }
+                    .rating-D { background: var(--d); } .rating-E { background: var(--e); }
+                    .big { font-size: 36px; font-weight: 700; line-height: 1; }
+                    .bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden;
+                           background: var(--line); margin: 14px 0 10px; }
+                    .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
+                    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+                    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+                    .stat { border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+                    .stat b { display: block; font-size: 22px; }
+                    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+                    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+                    th { color: var(--muted); font-weight: 600; }
+                    td.num, th.num { text-align: right; white-space: nowrap; }
+                    .table-wrap { overflow-x: auto; }
+                    .tag { display: inline-block; margin-top: 2px; white-space: nowrap; font-size: 12px;
+                           padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); }
+                    a { color: var(--accent); }
+                    footer { text-align: center; padding: 8px 0 24px; }
+                </style>
+            </t>
+
+            <t t-set="co2" t-value="data['carbon_footprint_kg_co2e']"/>
+            <main class="dpp">
+                <section class="card">
+                    <div class="hero">
+                        <img t-if="product.image_512" t-att-src="image_data_uri(product.image_512)" alt=""/>
+                        <div>
+                            <div class="eyebrow">Digital Product Passport</div>
+                            <h1 t-out="data['name']"/>
+                            <div class="muted">
+                                <span t-if="data['manufacturer']">by <t t-out="data['manufacturer']"/></span>
+                                <span t-if="data['reference']"> · Ref. <t t-out="data['reference']"/></span>
+                            </div>
+                        </div>
+                        <div t-if="data['rating']" t-attf-class="rating rating-#{data['rating']}"
+                             t-att-title="'Footprint rating %s' % data['rating']" t-out="data['rating']"/>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>Carbon footprint</h2>
+                    <div class="big"><t t-out="'%.1f' % co2['total']"/> <span class="muted">kg CO2e</span></div>
+                    <div class="bar" role="img" aria-label="Footprint breakdown">
+                        <div t-attf-style="width: #{co2['share_pct']['materials']}%; background: var(--materials);"/>
+                        <div t-attf-style="width: #{co2['share_pct']['manufacturing']}%; background: var(--manufacturing);"/>
+                        <div t-attf-style="width: #{co2['share_pct']['transport']}%; background: var(--transport);"/>
+                    </div>
+                    <div class="legend">
+                        <span><i class="dot" style="background: var(--materials)"/>Materials <t t-out="'%.1f' % co2['materials']"/> kg</span>
+                        <span><i class="dot" style="background: var(--manufacturing)"/>Manufacturing <t t-out="'%.1f' % co2['manufacturing']"/> kg</span>
+                        <span><i class="dot" style="background: var(--transport)"/>Transport <t t-out="'%.1f' % co2['transport']"/> kg</span>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>Circularity</h2>
+                    <div class="stats">
+                        <div class="stat"><b><t t-out="'%.0f' % data['recyclable_pct']"/>%</b><span class="muted">recyclable</span></div>
+                        <div class="stat"><b><t t-out="'%.0f' % data['recycled_content_pct']"/>%</b><span class="muted">recycled content</span></div>
+                        <div class="stat" t-if="data['repairability_score']"><b><t t-out="'%.1f' % data['repairability_score']"/>/10</b><span class="muted">repairability</span></div>
+                        <div class="stat" t-if="data['expected_lifetime_years']"><b><t t-out="data['expected_lifetime_years']"/> years</b><span class="muted">expected lifetime</span></div>
+                        <div class="stat" t-if="data['spare_parts_years']"><b><t t-out="data['spare_parts_years']"/> years</b><span class="muted">spare parts</span></div>
+                        <div class="stat"><b><t t-out="'%.2f' % data['weight_kg']"/> kg</b><span class="muted">total weight</span></div>
+                    </div>
+                </section>
+
+                <section class="card" t-if="data['materials']">
+                    <h2>Composition</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>Part</th><th>Material</th><th class="num">Weight</th>
+                                    <th class="num">Recycled</th><th>Origin</th><th class="num">CO2e</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="data['materials']" t-as="line">
+                                    <td t-out="line['component'] or '-'"/>
+                                    <td>
+                                        <t t-out="line['material']"/>
+                                        <span t-if="line['hazardous']" class="tag">declared substance</span>
+                                    </td>
+                                    <td class="num"><t t-out="'%.2f' % line['weight_kg']"/> kg</td>
+                                    <td class="num"><t t-out="'%.0f' % line['recycled_pct']"/>%</td>
+                                    <td t-out="line['origin'] or '-'"/>
+                                    <td class="num"><t t-out="'%.2f' % line['co2_kg']"/> kg</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="card" t-if="data['has_care_instructions']">
+                    <h2>Use &amp; care</h2>
+                    <div t-out="product.dpp_care_instructions"/>
+                </section>
+
+                <section class="card" t-if="data['has_end_of_life']">
+                    <h2>End of life &amp; recycling</h2>
+                    <div t-out="product.dpp_end_of_life"/>
+                </section>
+
+                <footer class="muted">
+                    Last updated <t t-out="data['last_update']"/> ·
+                    <a t-attf-href="/passport/#{product.dpp_token}/json">Machine-readable data (JSON)</a>
+                </footer>
+            </main>
+        </t>
+    </template>
+</odoo>

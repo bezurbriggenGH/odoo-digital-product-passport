@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_dpp_root" name="Digital Passport" sequence="60"
+              web_icon="product_digital_passport,static/description/icon.png"/>
+
+    <menuitem id="menu_dpp_products" name="Passports" parent="menu_dpp_root"
+              action="action_dpp_products" sequence="10"/>
+
+    <menuitem id="menu_dpp_config" name="Configuration" parent="menu_dpp_root" sequence="90"/>
+    <menuitem id="menu_dpp_materials" name="Materials" parent="menu_dpp_config"
+              action="action_dpp_material" sequence="10"/>
+</odoo>

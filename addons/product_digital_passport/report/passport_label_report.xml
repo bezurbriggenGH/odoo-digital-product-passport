@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Printable label: appears under the "Print" menu of products -->
+    <record id="action_report_passport_label" model="ir.actions.report">
+        <field name="name">Passport Label (QR)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_digital_passport.report_passport_label</field>
+        <field name="report_file">product_digital_passport.report_passport_label</field>
+        <field name="print_report_name">'Passport - %s' % object.name</field>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_passport_label">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="product">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div style="border: 2px solid #1f7a4d; border-radius: 12px; padding: 24px; width: 120mm; margin: 0 auto;">
+                            <p style="color: #1f7a4d; font-weight: bold; letter-spacing: 2px; margin: 0;">DIGITAL PRODUCT PASSPORT</p>
+                            <h2 style="margin: 6px 0 16px;" t-out="product.name"/>
+                            <t t-if="product.dpp_qr_code">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <img t-att-src="image_data_uri(product.dpp_qr_code)" style="width: 50mm; height: 50mm;"/>
+                                        </td>
+                                        <td style="vertical-align: top;">
+                                            <p style="margin: 0;">Carbon footprint</p>
+                                            <p style="font-size: 22px; font-weight: bold; margin: 0 0 8px;">
+                                                <t t-out="'%.1f' % product.dpp_co2_total"/> kg CO2e
+                                            </p>
+                                            <p t-if="product.dpp_footprint_rating" style="margin: 0 0 8px;">
+                                                Rating: <b t-out="product.dpp_footprint_rating.upper()"/>
+                                            </p>
+                                            <p style="margin: 0;">Recyclable: <b><t t-out="'%.0f' % product.dpp_recyclable_pct"/>%</b></p>
+                                            <p t-if="product.default_code" style="margin: 8px 0 0; color: #666;">
+                                                Ref. <t t-out="product.default_code"/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p style="font-size: 11px; color: #666; margin: 12px 0 0;">Scan to see the full passport.</p>
+                            </t>
+                            <p t-else="" style="color: #b00;">This product has no passport yet. Enable it in the "Digital Passport" tab.</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

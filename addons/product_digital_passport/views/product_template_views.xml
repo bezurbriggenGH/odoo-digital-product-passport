@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Adds a "Digital Passport" tab to the standard product form -->
+    <record id="product_template_form_view_dpp" model="ir.ui.view">
+        <field name="name">product.template.form.dpp</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Digital Passport" name="dpp">
+                    <field name="dpp_token" invisible="1"/>
+                    <group>
+                        <group string="Passport">
+                            <field name="dpp_enabled"/>
+                            <field name="dpp_manufacturer_id" invisible="not dpp_enabled"/>
+                            <field name="dpp_url" widget="url" invisible="not dpp_token"/>
+                            <div colspan="2" invisible="not dpp_token">
+                                <button name="action_dpp_open_public_page" type="object"
+                                        string="Open public page" icon="fa-external-link"
+                                        class="btn-secondary me-2"/>
+                                <button name="action_dpp_regenerate_token" type="object"
+                                        string="New link" icon="fa-refresh" class="btn-link"
+                                        confirm="The current QR codes and links will stop working. Continue?"/>
+                            </div>
+                        </group>
+                        <group invisible="not dpp_token">
+                            <field name="dpp_qr_code" widget="image" nolabel="1" colspan="2"
+                                   options="{'size': [160, 160]}"/>
+                        </group>
+                    </group>
+
+                    <div invisible="not dpp_enabled">
+                        <separator string="Material composition"/>
+                        <field name="dpp_material_line_ids">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="component"/>
+                                <field name="material_id"/>
+                                <field name="weight_kg" sum="Total"/>
+                                <field name="recycled_pct"/>
+                                <field name="origin_country_id" optional="show"/>
+                                <field name="recyclable" optional="show"/>
+                                <field name="co2_kg" sum="Total"/>
+                            </list>
+                        </field>
+
+                        <group>
+                            <group string="Carbon footprint (kg CO2e)">
+                                <field name="dpp_co2_materials"/>
+                                <field name="dpp_co2_manufacturing"/>
+                                <field name="dpp_co2_transport"/>
+                                <field name="dpp_co2_total" class="fw-bold"/>
+                                <field name="dpp_footprint_rating" widget="badge"
+                                       decoration-success="dpp_footprint_rating in ('a', 'b')"
+                                       decoration-warning="dpp_footprint_rating == 'c'"
+                                       decoration-danger="dpp_footprint_rating in ('d', 'e')"/>
+                            </group>
+                            <group string="Circularity">
+                                <field name="dpp_total_weight"/>
+                                <field name="dpp_recyclable_pct"/>
+                                <field name="dpp_recycled_pct"/>
+                                <field name="dpp_repairability_score"/>
+                                <field name="dpp_durability_years"/>
+                                <field name="dpp_spare_parts_years"/>
+                            </group>
+                        </group>
+
+                        <separator string="Use &amp; care"/>
+                        <field name="dpp_care_instructions" placeholder="How to use and maintain the product..."/>
+                        <separator string="End of life &amp; recycling"/>
+                        <field name="dpp_end_of_life" placeholder="How to dispose of or recycle the product..."/>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List used by the "Passports" menu. High priority number so it does
+         not replace the standard product list elsewhere. -->
+    <record id="product_template_view_list_dpp" model="ir.ui.view">
+        <field name="name">product.template.list.dpp</field>
+        <field name="model">product.template</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="default_code"/>
+                <field name="dpp_manufacturer_id"/>
+                <field name="dpp_total_weight"/>
+                <field name="dpp_co2_total"/>
+                <field name="dpp_footprint_rating" widget="badge"
+                       decoration-success="dpp_footprint_rating in ('a', 'b')"
+                       decoration-warning="dpp_footprint_rating == 'c'"
+                       decoration-danger="dpp_footprint_rating in ('d', 'e')"/>
+                <field name="dpp_recyclable_pct"/>
+                <field name="dpp_repairability_score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_dpp_products" model="ir.actions.act_window">
+        <field name="name">Passports</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="product_template_view_list_dpp"/>
+        <field name="domain">[('dpp_enabled', '=', True)]</field>
+        <field name="context">{'default_dpp_enabled': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first product passport</p>
+            <p>Add the material composition and get the carbon footprint and a public QR page.</p>
+        </field>
+    </record>
+</odoo>
